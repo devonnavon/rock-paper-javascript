@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Rock Paper Scissors</title>
+</head>
+<body>
+  <script>
+      function computerPlay() {
+        let num = Math.floor(Math.random() * 3);
+        let options = ['Rock', 'Paper','Scissors']
+        return options[num]
+      }
+
+      function playRound(playerSelection, computerSelection) {
+        let user = playerSelection.toLowerCase()
+        let comp = computerSelection.toLowerCase()
+        let lose = `You lose, ${comp} beats ${user}`
+        let win = `You win, ${user} beats ${comp}`
+        if (user === comp) {
+          return "You tied"
+        } else if ((user === 'rock' && comp==='paper') || (user === 'scissors' && comp==='rock') || (user === 'paper' && comp==='scissors')){
+          return lose
+        } else {
+          return win  
+        }
+      }
+
+      function game(num=5){
+        console.log(Array(num).keys())
+        for (const i of Array(num).keys()){
+          let user = prompt("Select rock, paper, or scissors", "rock")
+          console.log(playRound(user, computerPlay()))
+        }
+      }
+
+      game(5)
+
+  </script>
+</body>
+</html>
