@@ -5,6 +5,27 @@
   <title>Rock Paper Scissors</title>
 </head>
 <body>
+
+  <h1>Rock Paper Ding</h1> 
+  <div id = "buttons">
+    <button class= "game" id="Rock">Rock</button>
+    <button id="Paper">Paper</button>
+    <button id="Scissors">Scissors</button>
+  </div>
+  <div id="game">
+    <h1>GaMe:</h1>
+    <div id="player"></div>
+    <div id="computer"></div>
+    <div id="outcome"></div>
+  </div>
+  <div id="score">
+    <h1>ScOrE:</h1>
+    <div id="playerScore"></div>
+    <div id="computerScore"></div>
+    <div id="winner"></div>
+  </div>
+
+
   <script>
       function computerPlay() {
         let num = Math.floor(Math.random() * 3);
@@ -18,23 +39,54 @@
         let lose = `You lose, ${comp} beats ${user}`
         let win = `You win, ${user} beats ${comp}`
         if (user === comp) {
-          return "You tied"
+          return {'msg':'You tied', 'player':0, 'comp':0}
         } else if ((user === 'rock' && comp==='paper') || (user === 'scissors' && comp==='rock') || (user === 'paper' && comp==='scissors')){
-          return lose
+          return {'msg':lose, 'player':0, 'comp':1}
         } else {
-          return win  
+          return {'msg':win, 'player':1, 'comp':0}
         }
       }
 
-      function game(num=5){
-        console.log(Array(num).keys())
-        for (const i of Array(num).keys()){
-          let user = prompt("Select rock, paper, or scissors", "rock")
-          console.log(playRound(user, computerPlay()))
+
+      function game(playerSelection){
+        const player = document.querySelector('#player');
+        const computer = document.querySelector('#computer');
+        const outcome = document.querySelector('#outcome'); 
+        const computerSelection = computerPlay();
+        player.textContent = `You Selected: ${playerSelection}`;
+        computer.textContent = `Computer Selected: ${computerSelection}`;
+        const round = playRound(playerSelection, computerSelection)
+        outcome.textContent=round.msg
+        keepScore(round)
+      }
+
+      let playerScore = 0
+      let computerScore = 0
+
+      function keepScore(round){
+        const player = document.querySelector('#playerScore');
+        const computer = document.querySelector('#computerScore');
+        const winner = document.querySelector('#winner');
+        console.log("before " + playerScore)
+        playerScore+= round.player;
+        computerScore+= round.comp;
+        console.log("after " + playerScore)
+        player.textContent = `Your Score: ${playerScore}`
+        computer.textContent = `Your Score: ${computerScore}`
+        if(playerScore >= 5 || computerScore >= 5){
+          winner.textContent = (playerScore>computerScore) ? "You win!": "Computer Won My Bitch!"
+          playerScore = 0
+          computerScore = 0
         }
       }
 
-      game(5)
+
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+          game(button.id);
+        });
+      });
 
   </script>
 </body>
